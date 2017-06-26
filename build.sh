@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 # Copyright (c) 2011-2016 Benjamin Fleischer
 # All rights reserved.
@@ -725,6 +725,19 @@ function build_main
 {
     local build_d_directory="`dirname "${BASH_SOURCE[0]}"`/build.d"
 
+    # Submodules
+    pushd "$build_d_directory"
+    local let submodule_count=$(git submodule|wc -l|tr -s " " "s")
+    if [[ "$submodule_count" != "s5" ]]
+    then
+	echo "$submodule_count Submodules found, should be 5"
+	echo "Try
+	git submodule init
+	git submodule update"
+	exit 2
+    fi
+    popd
+    
     # Source libraries
 
     local library_path=""
